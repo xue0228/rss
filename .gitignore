@@ -3,3 +3,4 @@
 .idea/*
 h_*.py
 __pycache__
+*.log

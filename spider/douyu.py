@@ -3,6 +3,11 @@
 斗鱼第三方接口：http://open.douyucdn.cn/api/RoomApi/room/{room_id}
 """
 import os
+import sys
+
+root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(root_path)
+sys.path.append(root_path)
 
 from xyw_eyes.spider import Spider
 from xyw_eyes.rss import RSS2, RSSItem, Guid, div, img, parse_string_to_datetime
@@ -63,7 +68,6 @@ class DouYu(Spider):
         )
 
     async def end(self) -> None:
-        os.chdir(os.path.dirname(__file__))
         self.rss.set_build_time_now()
         await self.rss.async_write('./xml/' + self.name + '.xml')
 

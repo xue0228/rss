@@ -1,3 +1,4 @@
+import os
 import aiofiles
 import datetime
 from io import StringIO
@@ -25,8 +26,20 @@ class WriteXmlMixin:
         :param encoding: 文件编码方式
         :return:
         """
+        self.check_path(path)
         async with aiofiles.open(path, 'w', encoding=encoding) as fp:
             await fp.write(self.to_xml(encoding))
+
+    @staticmethod
+    def check_path(path: str) -> None:
+        """
+        检查文件路径是否存在，不存在则创建路径中包含的文件夹
+        :param path:
+        :return:
+        """
+        dir_path = os.path.dirname(os.path.abspath(path))
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
 
     def write(self, path: str, encoding: str = 'utf-8'):
         """
@@ -35,6 +48,7 @@ class WriteXmlMixin:
         :param encoding: 文件编码方式
         :return:
         """
+        self.check_path(path)
         self.write_xml(open(path, 'w', encoding=encoding), encoding=encoding)
 
 
